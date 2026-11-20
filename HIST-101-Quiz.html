@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>HIST 101 Midterms Quiz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --u:8px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --bg:hsla(210,60%,97%,1);
+  --surface:hsla(225,50%,92%,1);
+  --paper:hsla(0,0%,100%,.78);
+  --accent:hsla(14,90%,76%,1);
+  --accent-soft:hsla(14,90%,76%,.28);
+  --ink:hsla(225,30%,22%,1);
+  --mute:hsla(225,14%,42%,1);
+  --line:hsla(225,30%,22%,.12);
+  --ok:hsla(145,50%,84%,1);
+  --bad:hsla(355,75%,88%,1);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:calc(var(--u)*3);scroll-behavior:smooth;background:var(--bg)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Nunito,system-ui,sans-serif}
+.page{max-width:calc(var(--u)*90);margin:0 auto;padding:calc(var(--u)*4) calc(var(--u)*2) calc(var(--u)*8)}
+h1,h2{font-family:Fraunces,Georgia,serif;font-weight:700;margin:0;line-height:1.25}
+h1{font-size:clamp(28px,7vw,40px)}
+h2{font-size:24px}
+.masthead{margin-bottom:calc(var(--u)*3);animation:rise .6s var(--ease) both}
+.masthead p{margin:var(--u) 0 0;color:var(--mute)}
+.tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(calc(var(--u)*17),1fr));gap:var(--u);margin-bottom:calc(var(--u)*3);animation:rise .6s var(--ease) .1s both}
+.tab{font:700 15px/1.25 Nunito,sans-serif;color:var(--ink);background:var(--surface);border:0;border-radius:calc(var(--u)*2);padding:calc(var(--u)*1.5) calc(var(--u)*2);min-height:calc(var(--u)*7);cursor:pointer;text-align:left;transition:background .3s var(--ease),transform .3s var(--ease)}
+.tab small{display:block;font-weight:600;color:var(--mute)}
+.tab:hover{transform:translateY(calc(var(--u)*-.5))}
+.tab[aria-current="true"]{background:var(--accent)}
+.tab[aria-current="true"] small{color:var(--ink)}
+.summary{background:var(--surface);border-radius:calc(var(--u)*3);padding:calc(var(--u)*3);margin-bottom:calc(var(--u)*3);animation:rise .5s var(--ease) both}
+.summary[hidden]{display:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--u);margin:calc(var(--u)*2) 0}
+.stat{background:var(--paper);border-radius:calc(var(--u)*2);padding:calc(var(--u)*2) var(--u);text-align:center;font-weight:600;color:var(--mute)}
+.stat strong{display:block;font:700 32px/1.25 Fraunces,Georgia,serif;color:var(--ink)}
+.stat.ok{background:var(--ok)}
+.stat.bad{background:var(--bad)}
+.meter{height:calc(var(--u)*1.5);border-radius:99px;background:var(--paper);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width 1s var(--ease)}
+.verdict{margin:calc(var(--u)*2) 0 0;color:var(--mute)}
+.heading{display:flex;align-items:baseline;justify-content:space-between;gap:calc(var(--u)*2);flex-wrap:wrap;margin-bottom:calc(var(--u)*2)}
+.count{margin:0;color:var(--mute);font-weight:600}
+.count b{color:var(--ink)}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:calc(var(--u)*2)}
+.item{background:var(--surface);border-radius:calc(var(--u)*3);padding:calc(var(--u)*3);animation:rise .5s var(--ease) both;animation-delay:calc(var(--i)*40ms)}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{display:grid;grid-template-columns:calc(var(--u)*4) 1fr;gap:calc(var(--u)*2);align-items:start;float:left;width:100%;padding:0;margin-bottom:calc(var(--u)*2);font:700 19px/1.5 Fraunces,Georgia,serif}
+.num{display:grid;place-items:center;width:calc(var(--u)*4);height:calc(var(--u)*4);border-radius:50%;background:var(--paper);font:700 15px/1 Nunito,sans-serif}
+.choices{clear:both;display:grid;gap:var(--u)}
+.choice{position:relative;display:grid;grid-template-columns:calc(var(--u)*4) 1fr;gap:calc(var(--u)*2);align-items:center;min-height:calc(var(--u)*7);padding:var(--u) calc(var(--u)*2);background:var(--paper);border:2px solid transparent;border-radius:calc(var(--u)*2);cursor:pointer;transition:background .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease)}
+.choice:hover{border-color:var(--accent);transform:translateX(calc(var(--u)*.5))}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.key{display:grid;place-items:center;width:calc(var(--u)*4);height:calc(var(--u)*4);border-radius:50%;background:var(--surface);font:700 15px/1 Nunito,sans-serif;transition:background .3s var(--ease)}
+.choice:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.choice:has(input:checked) .key{background:var(--accent)}
+.choice:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
+.choice.is-correct{background:var(--ok);border-color:hsla(145,45%,55%,1)}
+.choice.is-wrong{background:var(--bad);border-color:hsla(355,60%,65%,1)}
+.locked .choice{cursor:default;transform:none}
+.note{margin:calc(var(--u)*2) 0 0;font-weight:700}
+.note[hidden]{display:none}
+.actions{display:flex;flex-wrap:wrap;gap:calc(var(--u)*2);margin-top:calc(var(--u)*3)}
+.btn{font:700 16px/1.5 Nunito,sans-serif;color:var(--ink);background:var(--accent);border:0;border-radius:99px;min-height:calc(var(--u)*6);padding:var(--u) calc(var(--u)*4);cursor:pointer;transition:transform .3s var(--ease),opacity .3s var(--ease),background .3s var(--ease)}
+.btn:hover:not(:disabled){transform:translateY(calc(var(--u)*-.5))}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.quiet{background:var(--surface)}
+footer{margin-top:calc(var(--u)*6);color:var(--mute);font-size:14px;text-align:center}
+@keyframes rise{from{opacity:0;transform:translateY(calc(var(--u)*2))}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <h1>HIST 101 Midterms Quiz</h1>
+    <p>Choose a lesson, answer all 15 questions from top to bottom, and then submit to see your score.</p>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Lessons"></nav>
+  <main>
+    <section class="summary" id="summary" aria-live="polite" hidden></section>
+    <form id="quiz" novalidate></form>
+  </main>
+  <footer><p>Based on the HIST 101 combined reviewer, Lessons 1 to 5.</p></footer>
+</div>
+<script>
+const lessons = [
+  { name: "Lesson 1", title: "How to Think Like a Historian", q: [
+    ["Which statement best describes history as event?", "A small fraction of everything that happened", "Everything that happened in the past", "The study and interpretation of the past", "The documents that preserve past events"],
+    ["Which statement best describes history as record?", "The traces and documents that preserve past events", "The actual past events themselves", "A degree program such as BA History", "A debate among historians"],
+    ["Which statement best describes history as discipline?", "The study and interpretation of the past", "Only the surviving documents", "Everything that ever happened", "A list of dates in order"],
+    ["What are the three main features of the historical?", "Difference, context, and process", "Source, trace, and evidence", "Narration, description, and exposition", "Period, area, and culture"],
+    ["Which feature is illustrated by the statement “The past is a foreign country”?", "Difference", "Context", "Process", "Corroboration"],
+    ["Which historical thinking skill must we apply first?", "Sourcing evidence", "Interpretation", "Corroboration", "Synthesis"],
+    ["Which sourcing question asks about the time and place of a source’s creation?", "When and where?", "What?", "Who?", "Why?"],
+    ["Which skill refers to the “debate among historians”?", "Interpretation", "Corroboration", "Periodization", "Causation"],
+    ["What does corroboration involve?", "Comparing sources with one another", "Tracing causes to their effects", "Dividing history into periods", "Producing a final essay"],
+    ["Within which three aspects is a source framed during contextualization?", "Period, area, and culture", "Cause, effect, and result", "Claim, rebuttal, and backing", "Source, trace, and evidence"],
+    ["What are causes that are hidden or indirect called?", "Latent causes", "Manifest causes", "Synchronic causes", "Diachronic causes"],
+    ["What does diachronic analysis study?", "Causes and effects across different periods of time", "A specific period and its conditions", "Only local events", "Only the actions of elites"],
+    ["Which skill treats the division of history into time periods as interpretation?", "Periodization", "Causation", "Corroboration", "Sourcing evidence"],
+    ["What does the A.R.C. model stand for?", "Actors, Relationship, and Context", "Argument, Reasoning, and Claim", "Analysis, Research, and Corroboration", "Actors, Rebuttal, and Claim"],
+    ["What is synthesis?", "Combining all the thinking skills to produce a final output, such as an essay", "Comparing two sources with each other", "Dividing time into periods", "Identifying the author of a source"]
+  ]},
+  { name: "Lesson 2", title: "Themes, Trends, and Key Concepts", q: [
+    ["What is the central question of historiography?", "How and why have accounts changed?", "What happened, how, and why?", "Who was the first historian?", "Which source is the oldest?"],
+    ["What is the central question of history?", "What happened, how, and why?", "How and why have accounts changed?", "Which historian is correct?", "What will happen next?"],
+    ["Which theme pertains to power, institutions, and states?", "Political history", "Economic history", "Social history", "Cultural history"],
+    ["Which question belongs to economic history?", "Who gained, who paid, and through what system?", "How did change reach ordinary lives?", "Who could decide, enforce, or resist?", "How did people remember change?"],
+    ["Which theme asks how change reached ordinary lives?", "Social history", "Political history", "Economic history", "Cultural history"],
+    ["Which theme covers language, ritual, memory, and identity?", "Cultural history", "Political history", "Economic history", "Social history"],
+    ["Which current direction uses big data analytics to uncover patterns?", "Digital history", "Memory studies", "Microhistory", "Environmental history"],
+    ["What does memory studies investigate?", "How remembering and forgetting shape collective interpretation", "How climate change affects societies", "How technology developed over time", "How states were formed"],
+    ["What does local and microhistory focus on?", "Community narratives and local experiences", "Events beyond the boundaries of nation-states", "Scientific discoveries", "The management of museums"],
+    ["How does a source become evidence?", "Through a claim", "Through its age", "Through its length", "Through its author’s fame"],
+    ["Which item is an example of responsible revision?", "Using newly accessible evidence", "Starting from a predetermined conclusion", "Quoting selectively", "Refusing relevant counterevidence"],
+    ["Which item is an example of negation or distortion?", "Selective quotation", "Transparent reasoning", "Engagement with counterevidence", "An improved method"],
+    ["Which word completes the statement “Chronology orders; periodization ___”?", "Argues", "Narrates", "Describes", "Cites"],
+    ["What does contingency ask?", "What might have been otherwise?", "Why did it happen?", "What came before and after?", "Who was responsible?"],
+    ["What are the four layers of change?", "Source, interpretation, institution, and public memory", "Political, economic, social, and cultural", "Actors, relationship, context, and claim", "Period, area, culture, and human"]
+  ]},
+  { name: "Lesson 3", title: "How to Write Like a Historian", q: [
+    ["According to Marius and Page (2010), what characterizes effective historical writing?", "Clarity, coherence, and a strong argument", "Long sentences and heavy jargon", "Many direct quotations", "A tone that avoids arguments"],
+    ["What kind of thesis statement should a historian write?", "A clear and arguable one", "A simple statement of fact", "A vague and broad one", "One hidden until the conclusion"],
+    ["Which mode of historical writing places actions and developments in sequence?", "Narration", "Description", "Exposition", "Argumentation"],
+    ["What does description do?", "Makes people, places, or conditions concrete", "Defends an interpretation", "Places events in chronological order", "Verifies that a source is authentic"],
+    ["What does exposition do?", "Explains an issue or a historical relationship", "Defends an interpretation", "Tells a story in sequence", "Lists the sources used"],
+    ["What does argumentation do?", "Defends an interpretation with evidence", "Only narrates events", "Only describes places", "Avoids counterarguments"],
+    ["What does P.E.E.L. stand for?", "Point, Evidence, Explanation, and Link", "Purpose, Event, Effect, and Lesson", "Point, Example, Edit, and Link", "Premise, Evidence, Essay, and Logic"],
+    ["In the P.E.E.L. method, what does the “Link” do?", "Connects the paragraph back to the overall thesis", "Adds a citation", "States the main idea", "Provides the supporting evidence"],
+    ["In the P.E.E.L. method, what does the “Explanation” do?", "Explains how the evidence supports the point", "States the main idea", "Ends the essay", "Lists the sources"],
+    ["What does the Maxim of Quantity require?", "Providing the right amount of information", "Providing only true information", "Providing only relevant information", "Providing only clear information"],
+    ["What does the Maxim of Quality require?", "Being truthful and avoiding unsupported information", "Being brief", "Being relevant", "Being orderly"],
+    ["What does the Maxim of Manner require?", "Avoiding ambiguity and being clear and orderly", "Providing enough information", "Staying on topic", "Being truthful"],
+    ["Which maxim is violated when a writer switches between two terms for the same idea?", "Maxim of Manner", "Maxim of Quantity", "Maxim of Quality", "Maxim of Relation"],
+    ["What is plagiarism?", "Presenting someone else’s work or ideas as your own", "Citing too many sources", "Paraphrasing with a citation", "Quoting with quotation marks"],
+    ["What must you still do when you paraphrase a source’s ideas?", "Cite the source properly", "Change only a few words", "Avoid naming the author", "Skip the citation"]
+  ]},
+  { name: "Lesson 4", title: "Historical Questions and Working Thesis", q: [
+    ["Which is the correct order of steps?", "Topic, factual question, analytical question, and working thesis", "Working thesis, topic, factual question, and analytical question", "Analytical question, topic, working thesis, and factual question", "Topic, working thesis, factual question, and analytical question"],
+    ["What does a factual question do?", "Identifies the information needed to understand the source", "Explains a pattern or a tension", "States the final argument", "Defends a conclusion"],
+    ["What does an analytical question do?", "Explains a pattern, tension, meaning, or historical relationship", "Asks only for a date", "Asks only for a name", "Cannot be investigated"],
+    ["What is a working thesis?", "A tentative argument about a relationship", "A final conclusion", "A list of facts", "A summary of sources"],
+    ["Which is the example factual question?", "Which duties does the Kartilya prescribe?", "How does the Kartilya connect equality and duty?", "Was the Katipunan successful?", "Why did the revolution happen?"],
+    ["Which is the example analytical question?", "How does the Kartilya connect equality and duty?", "Which duties does the Kartilya prescribe?", "Who wrote the Kartilya?", "When was the Kartilya written?"],
+    ["Which is the focused subject for the broad interest “the Philippine Revolution”?", "Equality in a Katipunan membership text", "The entire 1890s", "All of Philippine history", "Every revolution in Asia"],
+    ["Which are the four kinds of questions historians can investigate?", "Meaning, change, causation, and comparison", "Who, what, when, and where", "Claim, evidence, reasoning, and rebuttal", "Source, trace, question, and evidence"],
+    ["What does the “Clear” check ask?", "Can I explain the key terms?", "Which people, source, and setting do I mean?", "Am I assuming the answer?", "Can my available sources address this question?"],
+    ["What does the “Bounded” check ask?", "Which people, source, and historical setting do I mean?", "Can I explain the key terms?", "Am I assuming the answer?", "Is the source authentic?"],
+    ["What does the “Open” check ask?", "Am I investigating instead of assuming the answer?", "Can I explain the key terms?", "Is my scope bounded?", "Are my sources available?"],
+    ["What does the “Answerable” check ask?", "Can my available sources address this question?", "Is the question clear?", "Is the question open?", "Is the question long enough?"],
+    ["Which three elements does a working thesis include?", "Actors, relationship, and context", "Topic, source, and date", "Claim, backing, and qualifier", "Period, area, and culture"],
+    ["What does the question “What could change the answer?” point to?", "A source to seek, a claim to check, or a possible revision", "A final conclusion", "The end of the research", "A fixed answer"],
+    ["Which practice is part of honest source use?", "Limiting the claim to what the evidence can support", "Claiming more than the evidence shows", "Hiding any assistance received", "Skipping citations for paraphrases"]
+  ]},
+  { name: "Lesson 5", title: "Working with Sources", q: [
+    ["What is a primary source?", "A first-hand document or account", "An interpretation of another source", "A textbook", "A translator’s note"],
+    ["What is a secondary source?", "An interpretation of a primary source", "A first-hand account", "A forged document", "An unpublished diary"],
+    ["What kind of source use is a translation that transmits primary testimony?", "A later edition", "Primary testimony", "A secondary interpretation", "A forgery"],
+    ["What does “creation” ask in provenance and transmission?", "Who produced the record, and when and in what setting?", "Which edition are you using?", "Who copied the record later?", "Who translated the record?"],
+    ["What does “transmission” ask?", "What copying, translation, or editing stands between the record and you?", "Who created the record?", "Which repository holds the record?", "Is the record authentic?"],
+    ["What does “present access” ask?", "Which edition, repository, or digitization are you using?", "Who produced the record?", "Who translated the record?", "Why was the record created?"],
+    ["What does external criticism check?", "Authenticity", "Credibility", "Literal meaning", "The author’s motive"],
+    ["What does internal criticism check?", "Credibility", "Authenticity", "Handwriting", "Paper and ink"],
+    ["Which type of criticism includes examining handwriting, ink, paper, and seals?", "External criticism", "Internal criticism", "Corroboration", "Periodization"],
+    ["What does authenticity ask?", "Is this record what it claims to be?", "How believable is this statement?", "Who benefits from the record?", "Was the record translated?"],
+    ["What does credibility ask?", "How much confidence is warranted in this particular statement?", "Is the paper original?", "Who owns the record?", "When was the record digitized?"],
+    ["What is the form of Pigafetta’s account?", "A voyage narrative", "A navigational log", "A modern textbook", "A court record"],
+    ["Who was Albo in the expedition?", "The expedition pilot, who kept a navigational log", "The chronicler who wrote a voyage narrative", "The captain-general", "The translator"],
+    ["What is omission?", "A source leaves an event unmentioned", "A source makes a claim incompatible with another claim", "A source is a forgery", "A source is a translation"],
+    ["What is contradiction?", "A source makes a claim incompatible with another claim", "A source leaves an event unmentioned", "A source is the oldest account", "A source has no author"]
+  ]}
+];
+
+const letters = ["A", "B", "C", "D"];
+const tabs = document.getElementById("tabs");
+const summary = document.getElementById("summary");
+const form = document.getElementById("quiz");
+let current = 0;
+let items = [];
+
+const shuffle = (list) => {
+  const copy = [...list];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
+
+const sentence = (text) => (/[.?!]$/.test(text) ? text : text + ".");
+
+const renderTabs = () => {
+  tabs.innerHTML = lessons
+    .map((l, k) => `<button type="button" class="tab" data-k="${k}" aria-current="${k === current}">${l.name}<small>${l.title}</small></button>`)
+    .join("");
+};
+
+const renderQuiz = () => {
+  items = lessons[current].q.map(([q, a, ...wrong]) => ({ q, a, options: shuffle([a, ...wrong]) }));
+  summary.hidden = true;
+  form.classList.remove("locked");
+  form.innerHTML = `
+    <div class="heading">
+      <h2>${lessons[current].name}: ${lessons[current].title}</h2>
+      <p class="count">Answered <b id="count">0</b> of ${items.length}</p>
+    </div>
+    <ol>
+      ${items.map((it, n) => `
+        <li class="item" style="--i:${n}">
+          <fieldset>
+            <legend><span class="num">${n + 1}</span><span>${it.q}</span></legend>
+            <div class="choices">
+              ${it.options.map((o, j) => `
+                <label class="choice">
+                  <input type="radio" name="q${n}" value="${j}">
+                  <span class="key">${letters[j]}</span>
+                  <span>${sentence(o)}</span>
+                </label>`).join("")}
+            </div>
+            <p class="note" hidden></p>
+          </fieldset>
+        </li>`).join("")}
+    </ol>
+    <div class="actions">
+      <button type="submit" class="btn" id="submit" disabled>Submit answers</button>
+      <button type="button" class="btn quiet" id="clear">Clear answers</button>
+    </div>`;
+};
+
+const selectLesson = (k) => {
+  current = k;
+  renderTabs();
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+tabs.addEventListener("click", (e) => {
+  const button = e.target.closest(".tab");
+  if (button) selectLesson(Number(button.dataset.k));
+});
+
+form.addEventListener("change", () => {
+  const answered = items.filter((_, n) => form.elements["q" + n].value !== "").length;
+  document.getElementById("count").textContent = answered;
+  document.getElementById("submit").disabled = answered < items.length;
+});
+
+form.addEventListener("click", (e) => {
+  if (e.target.id === "clear") renderQuiz();
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let right = 0;
+  items.forEach((it, n) => {
+    const fieldset = form.querySelectorAll("fieldset")[n];
+    const labels = fieldset.querySelectorAll(".choice");
+    const correct = it.options.indexOf(it.a);
+    const chosen = Number(form.elements["q" + n].value);
+    labels[correct].classList.add("is-correct");
+    if (chosen === correct) {
+      right++;
+    } else {
+      labels[chosen].classList.add("is-wrong");
+    }
+    fieldset.querySelectorAll("input").forEach((input) => (input.disabled = true));
+    const note = fieldset.querySelector(".note");
+    note.textContent = chosen === correct ? "Correct." : `Incorrect. The correct answer is ${letters[correct]}.`;
+    note.hidden = false;
+  });
+  form.classList.add("locked");
+  document.getElementById("submit").disabled = true;
+  const total = items.length;
+  const percent = Math.round((right / total) * 100);
+  const verdict = percent === 100 ? "Perfect score. Outstanding work!" : percent >= 80 ? "Great job! You are almost there." : percent >= 60 ? "Good effort. Review the items marked incorrect." : "Keep studying. Review the lesson and try again.";
+  summary.innerHTML = `
+    <h2>${lessons[current].name} Results</h2>
+    <div class="stats">
+      <div class="stat ok"><strong>${right}</strong>Correct</div>
+      <div class="stat bad"><strong>${total - right}</strong>Wrong</div>
+      <div class="stat"><strong>${percent}%</strong>Score</div>
+    </div>
+    <div class="meter" role="img" aria-label="Score: ${percent} percent"><i id="meter"></i></div>
+    <p class="verdict">${verdict}</p>
+    <div class="actions"><button type="button" class="btn" id="retake">Retake this lesson</button></div>`;
+  summary.hidden = false;
+  requestAnimationFrame(() => requestAnimationFrame(() => (document.getElementById("meter").style.width = percent + "%")));
+  summary.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+summary.addEventListener("click", (e) => {
+  if (e.target.id === "retake") {
+    renderQuiz();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+});
+
+renderTabs();
+renderQuiz();
+</script>
+</body>
+</html>
